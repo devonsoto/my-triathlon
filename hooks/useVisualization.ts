@@ -1,37 +1,31 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import {
+  getVisualizationNotes,
+  upsertVisualizationNote,
+} from "@/app/actions/visualization"
+import { VISUALIZATION_SECTIONS } from "@/lib/constants"
 
-const STORAGE_KEY = "tri-visualization";
-
-function load(): Record<string, string> {
-  if (typeof window === "undefined") return {};
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as Record<string, string>) : {};
-  } catch {
-    return {};
-  }
-}
-
-function save(notes: Record<string, string>) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+function defaultNotes(): Record<string, string> {
+  return Object.fromEntries(VISUALIZATION_SECTIONS.map(({ key }) => [key, ""]))
 }
 
 export function useVisualization() {
-  const [notes, setNotes] = useState<Record<string, string>>({});
+  const [notes, setNotes] = useState<Record<string, string>>(defaultNotes())
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setNotes(load());
-  }, []);
+    getVisualizationNotes().then((data) => {
+      setNotes({ ...defaultNotes(), ...data })
+      setLoading(false)
+    })
+  }, [])
 
-  function updateSection(key: string, value: string) {
-    setNotes((prev) => {
-      const next = { ...prev, [key]: value };
-      save(next);
-      return next;
-    });
+  async function updateSection(key: string, value: string) {
+    setNotes((prev) => ({ ...prev, [key]: value }))
+    await upsertVisualizationNote(key, value)
   }
 
-  return { notes, updateSection };
+  return { notes, updateSection, loading }
 }

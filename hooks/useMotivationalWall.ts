@@ -1,52 +1,33 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import type { MotivationalItem } from "@/lib/types";
-
-const STORAGE_KEY = "tri-motivation";
-
-function load(): MotivationalItem[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as MotivationalItem[]) : [];
-  } catch {
-    return [];
-  }
-}
-
-function save(items: MotivationalItem[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-}
+import { useEffect, useState } from "react"
+import {
+  getMotivationalItems,
+  createMotivationalItem,
+  deleteMotivationalItem,
+} from "@/app/actions/motivational"
+import type { MotivationalItem } from "@/lib/types"
 
 export function useMotivationalWall() {
-  const [items, setItems] = useState<MotivationalItem[]>([]);
+  const [items, setItems] = useState<MotivationalItem[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setItems(load());
-  }, []);
+    getMotivationalItems().then((data) => {
+      setItems(data)
+      setLoading(false)
+    })
+  }, [])
 
-  function addItem(quote: string, source?: string) {
-    const item: MotivationalItem = {
-      id: crypto.randomUUID(),
-      quote,
-      source,
-      createdAt: new Date().toISOString(),
-    };
-    setItems((prev) => {
-      const next = [item, ...prev];
-      save(next);
-      return next;
-    });
+  async function addItem(quote: string, source?: string) {
+    const item = await createMotivationalItem(quote, source)
+    setItems((prev) => [item, ...prev])
   }
 
-  function deleteItem(id: string) {
-    setItems((prev) => {
-      const next = prev.filter((i) => i.id !== id);
-      save(next);
-      return next;
-    });
+  async function deleteItem(id: string) {
+    setItems((prev) => prev.filter((i) => i.id !== id))
+    await deleteMotivationalItem(id)
   }
 
-  return { items, addItem, deleteItem };
+  return { items, addItem, deleteItem, loading }
 }
