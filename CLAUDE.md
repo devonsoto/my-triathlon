@@ -19,6 +19,7 @@ my-triathlon/
 │           └── page.tsx              # Mental game: confidence, visualization, quotes
 ├── components/
 │   ├── Header.tsx                    # Fixed nav header with tri-color stripe
+│   ├── WeekStrip.tsx                 # Read-only 7-day schedule strip on athlete dashboard
 │   └── ui/                           # shadcn/ui primitives
 │       ├── badge.tsx
 │       ├── button.tsx
@@ -57,7 +58,7 @@ This is a Next.js 16 app using the App Router with React 19 and Tailwind CSS v4.
 
 - `app/layout.tsx` — Root layout; registers Geist (sans/mono) and Oswald fonts as CSS variables (`--font-geist-sans`, `--font-geist-mono`, `--font-oswald`)
 - `app/globals.css` — Global styles; `@theme` block maps CSS variables to Tailwind utilities (e.g. `font-display` → Oswald)
-- `app/athlete/page.tsx` — Athlete dashboard: live race countdown, discipline cards
+- `app/athlete/page.tsx` — Athlete dashboard: live race countdown, `<WeekStrip />`, discipline cards
 - `app/athlete/journal/page.tsx` — Training journal: list/detail/new-entry views, localStorage-backed
 - `app/athlete/mental/page.tsx` — Mental game: confidence meter with sparklines, race day visualization, motivational wall
 - `app/page.tsx` — Default Next.js home page (not yet customized)
@@ -90,3 +91,5 @@ Sprint triathlon training app. Currently single-user (hardcoded athlete config a
 **Discipline accent colors:** Swim `#00D4FF`, Bike `#FF6B2B`, Run `#7CFF4B`. Always import from `lib/constants.ts` (`DISCIPLINES`, `DISCIPLINE_ACCENT`) — never hardcode them again.
 
 **Data storage:** All user data lives in localStorage behind custom hooks in `hooks/`. The hooks abstract the storage layer so swapping to a backend later only requires changing the hook internals. Storage keys: `tri-journal`, `tri-confidence`, `tri-visualization`, `tri-motivation`.
+
+**WeekStrip discipline config:** `components/WeekStrip.tsx` defines `DISCIPLINE_CONFIG` for all 7 training types beyond the core three in `lib/constants.ts`: strength `#E535AB` 🏋️, accessory `#B366FF` 🎯, brick `#FFD700` 💪, soccer `#FFFFFF` ⚽. The `WEEKLY_SCHEDULE` constant is hardcoded there for now — structured to migrate to a localStorage hook when the full schedule page (`app/athlete/schedule/`) is built.
