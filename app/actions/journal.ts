@@ -15,8 +15,8 @@ function toJournalEntry(row: typeof journalEntries.$inferSelect): JournalEntry {
     mood: row.mood,
     disciplines: row.disciplines ?? [],
     content: row.content,
-    createdAt: (row.createdAt as Date).toISOString(),
-    updatedAt: (row.updatedAt as Date).toISOString(),
+    createdAt: row.createdAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
   }
 }
 

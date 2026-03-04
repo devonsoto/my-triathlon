@@ -8,8 +8,8 @@ export const journalEntries = pgTable("journal_entries", {
   mood:        text("mood").notNull(),
   disciplines: text("disciplines").array().notNull().default(sql`'{}'`),
   content:     text("content").notNull().default(""),
-  createdAt:   timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt:   timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  createdAt:   timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  updatedAt:   timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
 })
 
 export const confidenceEntries = pgTable("confidence_entries", {
@@ -17,7 +17,7 @@ export const confidenceEntries = pgTable("confidence_entries", {
   discipline: text("discipline").notNull(),
   value:      smallint("value").notNull(),
   date:       date("date").notNull(),
-  createdAt:  timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  createdAt:  timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
 })
 
 export const visualizationNotes = pgTable("visualization_notes", {
@@ -29,5 +29,5 @@ export const motivationalItems = pgTable("motivational_items", {
   id:        uuid("id").primaryKey().defaultRandom(),
   quote:     text("quote").notNull(),
   source:    text("source"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
 })

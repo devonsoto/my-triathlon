@@ -12,7 +12,7 @@ function toMotivationalItem(
     id: row.id,
     quote: row.quote,
     source: row.source ?? undefined,
-    createdAt: (row.createdAt as Date).toISOString(),
+    createdAt: row.createdAt.toISOString(),
   }
 }
 
