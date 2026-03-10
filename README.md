@@ -2,6 +2,8 @@
 
 A comprehensive sprint triathlon training application designed to help athletes prepare mentally and physically for race day.
 
+View here: https://my-triathlon.vercel.app/athlete
+
 ## Features
 
 ### 🏃 Athlete Dashboard
