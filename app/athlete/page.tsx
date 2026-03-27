@@ -12,8 +12,8 @@ import WeekStrip from "@/components/WeekStrip";
 // ─── Athlete config — swap these values for dynamic data later ───────────────
 const ATHLETE = {
   name: "Devon Soto",
-  raceDate: new Date("2026-04-12T07:00:00"),
-  raceLabel: "Sprint Triathlon · April 12, 2026",
+  raceDate: new Date("2026-05-17T07:00:00"),
+  raceLabel: "Sprint Triathlon · May 17, 2026 · Fort Worth, TX",
 };
 
 const DISCIPLINES = [
