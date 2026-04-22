@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, smallint, date, timestamp } from "drizzle-orm/pg-core"
+import { pgTable, uuid, text, date, timestamp } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 export const journalEntries = pgTable("journal_entries", {
@@ -12,22 +12,13 @@ export const journalEntries = pgTable("journal_entries", {
   updatedAt:   timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
 })
 
-export const confidenceEntries = pgTable("confidence_entries", {
-  id:         uuid("id").primaryKey().defaultRandom(),
-  discipline: text("discipline").notNull(),
-  value:      smallint("value").notNull(),
-  date:       date("date").notNull(),
-  createdAt:  timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
-})
-
-export const visualizationNotes = pgTable("visualization_notes", {
-  sectionKey: text("section_key").primaryKey(),
-  noteText:   text("note_text").notNull().default(""),
-})
-
-export const motivationalItems = pgTable("motivational_items", {
-  id:        uuid("id").primaryKey().defaultRandom(),
-  quote:     text("quote").notNull(),
-  source:    text("source"),
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+// Single-row table — one athlete, one WHOOP connection
+export const whoopTokens = pgTable("whoop_tokens", {
+  id:           uuid("id").primaryKey().defaultRandom(),
+  accessToken:  text("access_token").notNull(),
+  refreshToken: text("refresh_token").notNull(),
+  expiresAt:    timestamp("expires_at", { withTimezone: true, mode: "date" }).notNull(),
+  scope:        text("scope").notNull().default(""),
+  createdAt:    timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  updatedAt:    timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
 })
