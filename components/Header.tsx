@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 const NAV_LINKS = [
   { label: "Dashboard", href: "/athlete" },
   { label: "Journal", href: "/athlete/journal" },
-  { label: "Mental", href: "/athlete/mental" },
 ] as const;
 
 const TRI_COLORS = ["#00D4FF", "#FF6B2B", "#7CFF4B"] as const;
