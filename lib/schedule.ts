@@ -4,7 +4,7 @@ export type Session = { discipline: DisciplineKey; label: string } | null
 
 export const WEEKLY_SCHEDULE: { day: string; am: Session; pm: Session }[] = [
   { day: 'Mon', am: { discipline: 'strength', label: 'Strength' }, pm: null },
-  { day: 'Tue', am: { discipline: 'swim',     label: 'Swim'     }, pm: null },
+  { day: 'Tue', am: { discipline: 'strength', label: 'Strength' }, pm: { discipline: 'swim', label: 'Swim' } },
   { day: 'Wed', am: { discipline: 'bike',     label: 'Cycle'    }, pm: null },
   {
     day: 'Thu',

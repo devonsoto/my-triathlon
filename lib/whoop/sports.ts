@@ -20,6 +20,7 @@ export const SPORT_TO_DISCIPLINE: Record<string, DisciplineKey> = {
   pool_swimming:       "swim",
   open_water_swimming: "swim",
   weightlifting:       "strength",
+  weightlifting_msk:   "strength",
   functional_fitness:  "strength",
   triathlon:           "brick",
   duathlon:            "brick",

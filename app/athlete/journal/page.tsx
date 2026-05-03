@@ -30,7 +30,7 @@ function primaryAccent(disciplines: string[]): string {
     const color = DISCIPLINE_ACCENT[d.toLowerCase()];
     if (color) return color;
   }
-  return "#ffffff22";
+  return "#E5E7EB";
 }
 
 // ── Filter bar ──────────────────────────────────────────────────────────────
@@ -53,11 +53,11 @@ function PillToggle({
       style={
         active
           ? {
-              borderColor: color ?? "#fff",
-              color: color ?? "#fff",
-              backgroundColor: color ? color + "22" : "#ffffff22",
+              borderColor: color ?? "var(--color-text-primary)",
+              color: color ?? "var(--color-text-primary)",
+              backgroundColor: color ? color + "22" : "var(--color-card-border)",
             }
-          : { borderColor: "#ffffff22", color: "#71717a" }
+          : { borderColor: "var(--color-card-border)", color: "var(--color-text-secondary)" }
       }
     >
       {children}
@@ -88,11 +88,11 @@ function ListView({
   });
 
   return (
-    <div className="relative min-h-screen bg-[#0A0A0A] px-6 py-16 text-white md:px-16 lg:px-24">
-      <h1 className="mb-2 font-display text-5xl font-bold uppercase tracking-widest text-white md:text-6xl">
+    <div className="relative min-h-screen bg-page-bg px-6 py-16 text-text-primary md:px-16 lg:px-24">
+      <h1 className="mb-2 font-display text-5xl font-bold uppercase tracking-widest text-text-primary md:text-6xl">
         Training Log
       </h1>
-      <p className="mb-8 font-sans text-xs uppercase tracking-[0.3em] text-zinc-500">
+      <p className="mb-8 font-sans text-xs uppercase tracking-[0.3em] text-text-secondary">
         {entries.length} {entries.length === 1 ? "entry" : "entries"}
       </p>
 
@@ -132,18 +132,18 @@ function ListView({
       {/* Entries */}
       <div className="flex flex-col gap-4">
         {filtered.length === 0 && (
-          <p className="text-sm text-zinc-600">No entries match your filters.</p>
+          <p className="text-sm text-text-muted">No entries match your filters.</p>
         )}
         {filtered.map((entry) => (
           <Card
             key={entry.id}
             onClick={() => onSelect(entry.id)}
-            className="cursor-pointer gap-0 rounded-lg border-0 border-l-4 bg-[#111] py-0 shadow-none transition-colors hover:bg-[#1a1a1a]"
+            className="cursor-pointer gap-0 rounded-[12px] border-0 border-l-4 bg-card-bg py-0 shadow-none transition-colors hover:bg-gray-50"
             style={{ borderLeftColor: primaryAccent(entry.disciplines) }}
           >
             <CardContent className="px-6 py-5">
               <div className="mb-2 flex items-center gap-3">
-                <span className="font-sans text-xs text-zinc-500">
+                <span className="font-sans text-xs text-text-secondary">
                   {formatDate(entry.date)}
                 </span>
                 <span className="text-base">{entry.mood}</span>
@@ -154,8 +154,8 @@ function ListView({
                       className="rounded-sm border-0 px-2 py-0 text-[10px] font-bold uppercase"
                       style={{
                         backgroundColor:
-                          (DISCIPLINE_ACCENT[d.toLowerCase()] ?? "#fff") + "22",
-                        color: DISCIPLINE_ACCENT[d.toLowerCase()] ?? "#fff",
+                          (DISCIPLINE_ACCENT[d.toLowerCase()] ?? "#E5E7EB") + "22",
+                        color: DISCIPLINE_ACCENT[d.toLowerCase()] ?? "var(--color-text-primary)",
                       }}
                     >
                       {d}
@@ -163,10 +163,10 @@ function ListView({
                   ))}
                 </div>
               </div>
-              <h2 className="mb-1 font-display text-xl font-bold uppercase tracking-wide text-white">
+              <h2 className="mb-1 font-display text-xl font-bold uppercase tracking-wide text-text-primary">
                 {entry.title}
               </h2>
-              <p className="font-sans text-sm leading-relaxed text-zinc-400">
+              <p className="font-sans text-sm leading-relaxed text-text-secondary">
                 {entry.content.length > 120
                   ? entry.content.slice(0, 120) + "…"
                   : entry.content}
@@ -179,7 +179,7 @@ function ListView({
       {/* Floating new entry button */}
       <button
         onClick={onNew}
-        className="fixed bottom-8 right-8 flex h-14 w-14 items-center justify-center rounded-full bg-white text-2xl font-bold text-black shadow-lg transition-transform hover:scale-110"
+        className="fixed bottom-8 right-8 flex h-14 w-14 items-center justify-center rounded-full bg-text-primary text-2xl font-bold text-white shadow-lg transition-transform hover:scale-110"
       >
         +
       </button>
@@ -206,16 +206,16 @@ function DetailView({
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] px-6 py-16 text-white md:px-16 lg:px-24">
+    <div className="min-h-screen bg-page-bg px-6 py-16 text-text-primary md:px-16 lg:px-24">
       <button
         onClick={onBack}
-        className="mb-8 flex items-center gap-2 font-sans text-xs uppercase tracking-widest text-zinc-500 transition-colors hover:text-white"
+        className="mb-8 flex items-center gap-2 font-sans text-xs uppercase tracking-widest text-text-secondary transition-colors hover:text-text-primary"
       >
         ← Back
       </button>
 
       <div className="mb-4 flex items-center gap-3">
-        <span className="font-sans text-xs text-zinc-500">
+        <span className="font-sans text-xs text-text-secondary">
           {formatDate(entry.date)}
         </span>
         <span className="text-xl">{entry.mood}</span>
@@ -226,8 +226,8 @@ function DetailView({
               className="rounded-sm border-0 px-2 py-0 text-[10px] font-bold uppercase"
               style={{
                 backgroundColor:
-                  (DISCIPLINE_ACCENT[d.toLowerCase()] ?? "#fff") + "22",
-                color: DISCIPLINE_ACCENT[d.toLowerCase()] ?? "#fff",
+                  (DISCIPLINE_ACCENT[d.toLowerCase()] ?? "#E5E7EB") + "22",
+                color: DISCIPLINE_ACCENT[d.toLowerCase()] ?? "var(--color-text-primary)",
               }}
             >
               {d}
@@ -237,13 +237,13 @@ function DetailView({
       </div>
 
       <h1
-        className="mb-8 font-display text-4xl font-bold uppercase tracking-wide text-white md:text-5xl"
+        className="mb-8 font-display text-4xl font-bold uppercase tracking-wide text-text-primary md:text-5xl"
         style={{ borderLeft: `4px solid ${primaryAccent(entry.disciplines)}`, paddingLeft: "1rem" }}
       >
         {entry.title}
       </h1>
 
-      <p className="max-w-2xl font-sans text-base leading-8 text-zinc-300 whitespace-pre-wrap">
+      <p className="max-w-2xl font-sans text-base leading-8 text-text-primary whitespace-pre-wrap">
         {entry.content}
       </p>
 
@@ -251,7 +251,7 @@ function DetailView({
         <Button
           onClick={handleDelete}
           variant="outline"
-          className="border-red-900 bg-transparent font-sans text-xs uppercase tracking-widest text-red-600 hover:bg-red-950 hover:text-red-400"
+          className="border-red-300 bg-transparent font-sans text-xs uppercase tracking-widest text-red-600 hover:bg-red-50 hover:text-red-600"
         >
           Delete Entry
         </Button>
@@ -291,48 +291,48 @@ function NewEntryForm({
     title.trim() && mood && disciplines.length > 0 && content.trim();
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] px-6 py-16 text-white md:px-16 lg:px-24">
+    <div className="min-h-screen bg-page-bg px-6 py-16 text-text-primary md:px-16 lg:px-24">
       <button
         onClick={onBack}
-        className="mb-8 flex items-center gap-2 font-sans text-xs uppercase tracking-widest text-zinc-500 transition-colors hover:text-white"
+        className="mb-8 flex items-center gap-2 font-sans text-xs uppercase tracking-widest text-text-secondary transition-colors hover:text-text-primary"
       >
         ← Back
       </button>
 
-      <h1 className="mb-10 font-display text-4xl font-bold uppercase tracking-widest text-white">
+      <h1 className="mb-10 font-display text-4xl font-bold uppercase tracking-widest text-text-primary">
         New Entry
       </h1>
 
       <div className="flex max-w-2xl flex-col gap-8">
         {/* Title */}
         <div>
-          <label className="mb-2 block font-sans text-xs uppercase tracking-widest text-zinc-500">
+          <label className="mb-2 block font-sans text-xs uppercase tracking-widest text-text-secondary">
             Title
           </label>
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="What did you work on?"
-            className="border-white/10 bg-[#111] font-sans text-white placeholder:text-zinc-600 focus-visible:ring-white/30"
+            className="border-card-border bg-card-bg font-sans text-text-primary placeholder:text-text-muted focus-visible:ring-swim/30"
           />
         </div>
 
         {/* Date */}
         <div>
-          <label className="mb-2 block font-sans text-xs uppercase tracking-widest text-zinc-500">
+          <label className="mb-2 block font-sans text-xs uppercase tracking-widest text-text-secondary">
             Date
           </label>
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full rounded-md border border-white/10 bg-[#111] px-3 py-2 font-sans text-sm text-white focus:outline-none focus:ring-1 focus:ring-white/30"
+            className="w-full rounded-md border border-card-border bg-card-bg px-3 py-2 font-sans text-sm text-text-primary focus:outline-none focus:ring-1 focus:ring-swim/30"
           />
         </div>
 
         {/* Mood */}
         <div>
-          <label className="mb-3 block font-sans text-xs uppercase tracking-widest text-zinc-500">
+          <label className="mb-3 block font-sans text-xs uppercase tracking-widest text-text-secondary">
             Mood
           </label>
           <div className="flex flex-wrap gap-3">
@@ -344,8 +344,8 @@ function NewEntryForm({
                 className="flex h-12 w-12 items-center justify-center rounded-full border text-2xl transition-all"
                 style={
                   mood === emoji
-                    ? { borderColor: "#fff", backgroundColor: "#ffffff22" }
-                    : { borderColor: "#ffffff22" }
+                    ? { borderColor: "var(--color-text-primary)", backgroundColor: "var(--color-card-border)" }
+                    : { borderColor: "var(--color-card-border)" }
                 }
               >
                 {emoji}
@@ -356,7 +356,7 @@ function NewEntryForm({
 
         {/* Disciplines */}
         <div>
-          <label className="mb-3 block font-sans text-xs uppercase tracking-widest text-zinc-500">
+          <label className="mb-3 block font-sans text-xs uppercase tracking-widest text-text-secondary">
             Disciplines
           </label>
           <div className="flex flex-wrap gap-2">
@@ -375,7 +375,7 @@ function NewEntryForm({
 
         {/* Content */}
         <div>
-          <label className="mb-2 block font-sans text-xs uppercase tracking-widest text-zinc-500">
+          <label className="mb-2 block font-sans text-xs uppercase tracking-widest text-text-secondary">
             Entry
           </label>
           <Textarea
@@ -383,14 +383,14 @@ function NewEntryForm({
             onChange={(e) => setContent(e.target.value)}
             placeholder="How did it go? What did you learn? How did you feel?"
             rows={8}
-            className="border-white/10 bg-[#111] font-sans text-white placeholder:text-zinc-600 focus-visible:ring-white/30"
+            className="border-card-border bg-card-bg font-sans text-text-primary placeholder:text-text-muted focus-visible:ring-swim/30"
           />
         </div>
 
         <Button
           onClick={handleSave}
           disabled={!isValid}
-          className="w-full bg-white font-display text-sm font-bold uppercase tracking-widest text-black hover:bg-zinc-200 disabled:opacity-30"
+          className="w-full bg-text-primary font-display text-sm font-bold uppercase tracking-widest text-white hover:opacity-90 disabled:opacity-30"
         >
           Save Entry
         </Button>
