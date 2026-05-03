@@ -22,17 +22,17 @@ export function RecoveryCard({ data, loading, error, onRefresh }: RecoveryCardPr
 
   return (
     <div
-      className="relative rounded-lg bg-[#111] p-8 border-l-4"
+      className="relative rounded-[12px] bg-card-bg p-8 border border-card-border border-l-4"
       style={{ borderLeftColor: color }}
     >
       {/* Header row */}
       <div className="flex items-start justify-between mb-6">
-        <span className="font-sans text-xs font-semibold uppercase tracking-widest text-zinc-500">
+        <span className="font-sans text-xs font-semibold uppercase tracking-widest text-text-secondary">
           Recovery
         </span>
         <button
           onClick={onRefresh}
-          className="rounded-full p-1.5 text-zinc-600 hover:text-zinc-300 transition-colors"
+          className="rounded-full p-1.5 text-text-muted hover:text-text-primary transition-colors"
           aria-label="Refresh WHOOP data"
         >
           <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
@@ -41,16 +41,16 @@ export function RecoveryCard({ data, loading, error, onRefresh }: RecoveryCardPr
 
       {loading ? (
         <div className="space-y-4">
-          <div className="h-16 w-32 rounded bg-zinc-800 animate-pulse" />
-          <div className="h-4 w-24 rounded bg-zinc-800 animate-pulse" />
+          <div className="h-16 w-32 rounded bg-gray-200 animate-pulse" />
+          <div className="h-4 w-24 rounded bg-gray-200 animate-pulse" />
           <div className="mt-6 flex gap-8">
             <div className="space-y-2">
-              <div className="h-6 w-16 rounded bg-zinc-800 animate-pulse" />
-              <div className="h-3 w-10 rounded bg-zinc-800 animate-pulse" />
+              <div className="h-6 w-16 rounded bg-gray-200 animate-pulse" />
+              <div className="h-3 w-10 rounded bg-gray-200 animate-pulse" />
             </div>
             <div className="space-y-2">
-              <div className="h-6 w-16 rounded bg-zinc-800 animate-pulse" />
-              <div className="h-3 w-14 rounded bg-zinc-800 animate-pulse" />
+              <div className="h-6 w-16 rounded bg-gray-200 animate-pulse" />
+              <div className="h-3 w-14 rounded bg-gray-200 animate-pulse" />
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@ export function RecoveryCard({ data, loading, error, onRefresh }: RecoveryCardPr
                 {data!.recoveryScore ?? "—"}
               </span>
               {data!.recoveryScore !== null && (
-                <span className="font-display text-3xl text-zinc-400 mb-2">%</span>
+                <span className="font-display text-3xl text-text-secondary mb-2">%</span>
               )}
             </div>
           </div>
@@ -76,12 +76,12 @@ export function RecoveryCard({ data, loading, error, onRefresh }: RecoveryCardPr
             {data!.hrvRmssd !== null && (
               <div>
                 <div className="flex items-baseline gap-1">
-                  <span className="font-display text-2xl font-bold text-white">
+                  <span className="font-display text-2xl font-bold text-text-primary">
                     {Math.round(data!.hrvRmssd)}
                   </span>
-                  <span className="font-sans text-xs text-zinc-500">ms</span>
+                  <span className="font-sans text-xs text-text-secondary">ms</span>
                 </div>
-                <span className="font-sans text-xs font-semibold uppercase tracking-widest text-zinc-500">
+                <span className="font-sans text-xs font-semibold uppercase tracking-widest text-text-secondary">
                   HRV
                 </span>
               </div>
@@ -89,12 +89,12 @@ export function RecoveryCard({ data, loading, error, onRefresh }: RecoveryCardPr
             {data!.restingHr !== null && (
               <div>
                 <div className="flex items-baseline gap-1">
-                  <span className="font-display text-2xl font-bold text-white">
+                  <span className="font-display text-2xl font-bold text-text-primary">
                     {data!.restingHr}
                   </span>
-                  <span className="font-sans text-xs text-zinc-500">bpm</span>
+                  <span className="font-sans text-xs text-text-secondary">bpm</span>
                 </div>
-                <span className="font-sans text-xs font-semibold uppercase tracking-widest text-zinc-500">
+                <span className="font-sans text-xs font-semibold uppercase tracking-widest text-text-secondary">
                   Resting HR
                 </span>
               </div>
@@ -102,7 +102,7 @@ export function RecoveryCard({ data, loading, error, onRefresh }: RecoveryCardPr
           </div>
 
           {/* Timestamp */}
-          <p className="mt-6 font-sans text-[10px] text-zinc-600">
+          <p className="mt-6 font-sans text-[10px] text-text-muted">
             Updated {formatTimestamp(data!.updatedAt)}
           </p>
         </>

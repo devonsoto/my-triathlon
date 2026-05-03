@@ -5,6 +5,17 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-page-bg: #F0F4FF;
+  --color-card-bg: #ffffff;
+  --color-card-border: #E5E7EB;
+  --color-text-primary: #1A1A2E;
+  --color-text-secondary: #6B7280;
+  --color-text-muted: #9CA3AF;
+  --color-swim: #3B82F6;
+  --color-bike: #F97316;
+  --color-run: #22C55E;
+  --color-recovery: #22C55E;
+  --color-sleep: #3B82F6;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);

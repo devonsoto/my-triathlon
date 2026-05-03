@@ -4,8 +4,8 @@ export function formatSleepDuration(ms: number): { hours: number; minutes: numbe
 }
 
 export function recoveryColor(score: number | null): string {
-  if (score === null) return "#333"
-  if (score >= 67) return "#7CFF4B"
+  if (score === null) return "var(--color-text-muted)"
+  if (score >= 67) return "var(--color-recovery)"
   if (score >= 34) return "#FFD700"
   return "#E8002D"
 }

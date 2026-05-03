@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useWhoopMonthWorkouts } from '@/hooks/useWhoopMonthWorkouts'
 import { DISCIPLINE_CONFIG, type DisciplineKey } from '@/lib/constants'
 import { SPORT_TO_DISCIPLINE } from '@/lib/whoop/sports'
@@ -8,16 +10,22 @@ import { localDateKeyInTz } from '@/lib/utils'
 
 const DAY_HEADERS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const MAX_STRIPS = 3
+const EARLIEST = { year: 2026, month: 1 }
+const pad = (n: number) => String(n).padStart(2, '0')
 
-function getMonthGrid(tz: string) {
+function getMonthGrid(tz: string, offset: number) {
   const todayKey = localDateKeyInTz(new Date(), tz)
-  const [year, month] = todayKey.split('-').map(Number)
+  const [todayYear, todayMonth] = todayKey.split('-').map(Number)
+  const maxOffset = (todayYear - EARLIEST.year) * 12 + (todayMonth - EARLIEST.month)
+
+  let year = todayYear
+  let month = todayMonth - offset
+  while (month <= 0) { month += 12; year -= 1 }
 
   const firstDay = new Date(Date.UTC(year, month - 1, 1, 12))
   const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate()
   const firstDayOfWeek = (firstDay.getUTCDay() + 6) % 7
 
-  const pad = (n: number) => String(n).padStart(2, '0')
   const monthStartDate = `${year}-${pad(month)}-01`
 
   const monthLabel = new Intl.DateTimeFormat('en-US', {
@@ -31,7 +39,7 @@ function getMonthGrid(tz: string) {
   for (let d = 1; d <= daysInMonth; d++) cells.push(d)
   while (cells.length < 42) cells.push(null)
 
-  return { year, month, monthLabel, monthStartDate, cells }
+  return { year, month, monthLabel, monthStartDate, cells, maxOffset }
 }
 
 function groupByDate(workouts: WhoopWorkoutSummary[]): Record<string, DisciplineKey[]> {
@@ -53,29 +61,47 @@ export default function MonthView() {
       ? Intl.DateTimeFormat().resolvedOptions().timeZone
       : 'UTC'
 
-  const { year, month, monthLabel, monthStartDate, cells } = getMonthGrid(tz)
+  const [monthOffset, setMonthOffset] = useState(0)
+
+  const { year, month, monthLabel, monthStartDate, cells, maxOffset } = getMonthGrid(tz, monthOffset)
   const { result } = useWhoopMonthWorkouts(monthStartDate, tz)
 
   const workoutsByDate =
     result?.status === 'ok' ? groupByDate(result.data) : {}
 
-  const pad = (n: number) => String(n).padStart(2, '0')
-
   return (
     <section className='mb-16'>
-      <p className='mb-2 text-center font-sans text-xs font-semibold uppercase tracking-[0.3em] text-zinc-500'>
-        This Month
+      <p className='mb-2 text-center font-sans text-xs font-semibold uppercase tracking-[0.3em] text-text-secondary'>
+        {monthOffset === 0 ? 'This Month' : 'Past Month'}
       </p>
-      <p className='mb-4 text-center font-display text-xl font-bold uppercase tracking-widest text-white'>
-        {monthLabel}
-      </p>
+      <div className='mb-4 flex items-center justify-center gap-4'>
+        <button
+          onClick={() => setMonthOffset(o => Math.min(o + 1, maxOffset))}
+          disabled={monthOffset >= maxOffset}
+          className='rounded p-1 text-text-muted transition-colors hover:text-text-primary disabled:opacity-30'
+          aria-label='Previous month'
+        >
+          <ChevronLeft size={18} />
+        </button>
+        <p className='font-display text-xl font-bold uppercase tracking-widest text-text-primary'>
+          {monthLabel}
+        </p>
+        <button
+          onClick={() => setMonthOffset(o => Math.max(o - 1, 0))}
+          disabled={monthOffset === 0}
+          className='rounded p-1 text-text-muted transition-colors hover:text-text-primary disabled:opacity-30'
+          aria-label='Next month'
+        >
+          <ChevronRight size={18} />
+        </button>
+      </div>
 
       {/* Day-of-week header */}
       <div className='mb-1 grid grid-cols-7 gap-1'>
         {DAY_HEADERS.map((d) => (
           <div
             key={d}
-            className='text-center font-mono text-[10px] uppercase tracking-widest text-zinc-600'
+            className='text-center font-mono text-[10px] uppercase tracking-widest text-text-muted'
           >
             {d}
           </div>
@@ -99,10 +125,10 @@ export default function MonthView() {
           return (
             <div
               key={i}
-              className='relative h-14 rounded border border-white/5 bg-[#111]'
+              className='relative h-14 rounded border border-card-border bg-card-bg'
             >
               {day !== null && (
-                <span className='absolute left-2 top-1.5 font-mono text-[11px] text-zinc-500'>
+                <span className='absolute left-2 top-1.5 font-mono text-[11px] text-text-secondary'>
                   {day}
                 </span>
               )}
@@ -116,7 +142,7 @@ export default function MonthView() {
                     />
                   ))}
                   {overflow > 0 && (
-                    <span className='text-center font-mono text-[9px] text-zinc-600'>
+                    <span className='text-center font-mono text-[9px] text-text-muted'>
                       +{overflow}
                     </span>
                   )}

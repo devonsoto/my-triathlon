@@ -82,16 +82,16 @@ function getCurrentWeekDates(tz: string): Date[] {
 function PlanPill({ session, slot }: { session: Session; slot: 'AM' | 'PM' }) {
   if (!session) {
     return (
-      <div className='flex items-center gap-2 rounded border border-white/5 px-3 py-2'>
-        <span className='font-mono text-xs text-zinc-700'>{slot}</span>
-        <span className='font-sans text-xs text-zinc-700'>—</span>
+      <div className='flex items-center gap-2 rounded border border-card-border px-3 py-2'>
+        <span className='font-mono text-xs text-text-muted'>{slot}</span>
+        <span className='font-sans text-xs text-text-muted'>—</span>
       </div>
     )
   }
   const cfg = DISCIPLINE_CONFIG[session.discipline]
   return (
     <div
-      className='flex items-center gap-2 rounded border-l-2 bg-white/2 px-3 py-2'
+      className='flex items-center gap-2 rounded border-l-2 bg-gray-50 px-3 py-2'
       style={{ borderColor: cfg.color }}
     >
       <span className='font-mono text-xs' style={{ color: cfg.color }}>
@@ -126,7 +126,7 @@ function WorkoutRow({
 
   return (
     <div
-      className='flex flex-wrap items-center gap-x-4 gap-y-2 rounded border-l-2 bg-white/2 px-3 py-2.5'
+      className='flex flex-wrap items-center gap-x-4 gap-y-2 rounded border-l-2 bg-gray-50 px-3 py-2.5'
       style={{ borderColor: style.color }}
     >
       <div className='flex items-center gap-2'>
@@ -148,7 +148,7 @@ function WorkoutRow({
           </span>
         )}
       </div>
-      <span className='font-mono text-xs text-zinc-500'>{start}</span>
+      <span className='font-mono text-xs text-text-secondary'>{start}</span>
       <Stat label='Dur' value={duration} />
       {scored && workout.strain != null && (
         <Stat label='Strain' value={workout.strain.toFixed(1)} />
@@ -162,8 +162,8 @@ function WorkoutRow({
       {distance && <Stat label='Dist' value={distance} />}
       {calories && <Stat label='Cal' value={calories} />}
       {!scored && (
-        <span className='inline-flex items-center gap-1.5 font-mono text-xs text-zinc-500'>
-          <span className='inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-zinc-500' />
+        <span className='inline-flex items-center gap-1.5 font-mono text-xs text-text-secondary'>
+          <span className='inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-text-muted' />
           pending
         </span>
       )}
@@ -182,14 +182,14 @@ function Stat({
 }) {
   return (
     <div className='flex items-baseline gap-1.5 leading-none'>
-      <span className='font-mono text-[10px] uppercase tracking-wider text-zinc-500'>
+      <span className='font-mono text-[10px] uppercase tracking-wider text-text-secondary'>
         {label}
       </span>
-      <span className='font-display text-sm font-semibold text-white'>
+      <span className='font-display text-sm font-semibold text-text-primary'>
         {value}
       </span>
       {unit && (
-        <span className='font-sans text-[10px] text-zinc-500'>{unit}</span>
+        <span className='font-sans text-[10px] text-text-secondary'>{unit}</span>
       )}
     </div>
   )
@@ -220,12 +220,12 @@ export default function WeekStrip() {
 
   return (
     <section className='mb-16'>
-      <p className='mb-2 text-center font-sans text-xs font-semibold uppercase tracking-[0.3em] text-zinc-500'>
+      <p className='mb-2 text-center font-sans text-xs font-semibold uppercase tracking-[0.3em] text-text-secondary'>
         This Week
       </p>
 
       {notConfigured && (
-        <p className='mb-4 text-center font-sans text-[10px] uppercase tracking-widest text-zinc-600'>
+        <p className='mb-4 text-center font-sans text-[10px] uppercase tracking-widest text-text-muted'>
           Connect WHOOP to see logged workouts
         </p>
       )}
@@ -258,16 +258,16 @@ export default function WeekStrip() {
               className={[
                 'flex flex-col gap-4 rounded-lg border p-5 transition-opacity sm:flex-row sm:items-start sm:gap-6',
                 isToday
-                  ? 'border-white/30 bg-[#1E1E1E]'
+                  ? 'border-swim bg-[#EEF2FF]'
                   : isPast
-                    ? 'border-white/5 bg-[#111] opacity-50'
-                    : 'border-white/5 bg-[#111]',
+                    ? 'border-card-border bg-card-bg opacity-50'
+                    : 'border-card-border bg-card-bg',
               ].join(' ')}
               style={
                 isToday
                   ? {
                       boxShadow:
-                        '0 0 0 1px rgba(255,255,255,0.15), 0 0 16px rgba(255,255,255,0.06)',
+                        '0 0 0 1px rgba(59,130,246,0.25), 0 0 16px rgba(59,130,246,0.08)',
                     }
                   : {}
               }
@@ -277,12 +277,12 @@ export default function WeekStrip() {
                 <span
                   className={[
                     'font-display text-xl font-bold uppercase tracking-widest',
-                    isToday ? 'text-white' : 'text-zinc-400',
+                    isToday ? 'text-text-primary' : 'text-text-secondary',
                   ].join(' ')}
                 >
                   {day}
                 </span>
-                <span className='font-sans text-xs uppercase tracking-wider text-zinc-600'>
+                <span className='font-sans text-xs uppercase tracking-wider text-text-muted'>
                   {monthLabel} {dateNum}
                 </span>
               </div>
@@ -309,14 +309,14 @@ export default function WeekStrip() {
                     )
                   })
                 ) : errored ? (
-                  <div className='flex items-center gap-2 text-zinc-500'>
+                  <div className='flex items-center gap-2 text-text-secondary'>
                     <AlertTriangle size={14} />
                     <span className='font-sans text-xs uppercase tracking-wider'>
                       WHOOP error
                     </span>
                   </div>
                 ) : notConfigured ? null : isPast || isToday ? (
-                  <span className='font-sans text-xs uppercase tracking-wider text-zinc-700'>
+                  <span className='font-sans text-xs uppercase tracking-wider text-text-muted'>
                     — no workouts logged
                   </span>
                 ) : null}
@@ -327,7 +327,7 @@ export default function WeekStrip() {
       </div>
 
       {truncated && (
-        <p className='mt-2 text-center font-sans text-[10px] uppercase tracking-widest text-zinc-600'>
+        <p className='mt-2 text-center font-sans text-[10px] uppercase tracking-widest text-text-muted'>
           +more
         </p>
       )}
